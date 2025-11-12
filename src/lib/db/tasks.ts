@@ -1,0 +1,83 @@
+import { get, set } from 'idb-keyval'
+import { KEYS } from './keys'
+import type { Task } from '../types'
+
+function generateUUID(): string {
+  return crypto.randomUUID()
+}
+
+export async function getTasks(): Promise<Task[]> {
+  const tasks = await get(KEYS.TASKS)
+  return tasks || []
+}
+
+export async function getTaskById(id: string): Promise<Task | undefined> {
+  const tasks = await getTasks()
+  return tasks.find(t => t.id === id)
+}
+
+export async function createTask(taskData: Omit<Task, 'id' | 'completed' | 'createdAt'>): Promise<Task> {
+  const tasks = await getTasks()
+
+  const newTask: Task = {
+    ...taskData,
+    id: generateUUID(),
+    completed: false,
+    createdAt: new Date().toISOString()
+  }
+
+  tasks.push(newTask)
+  await set(KEYS.TASKS, tasks)
+
+  return newTask
+}
+
+export async function updateTask(id: string, updates: Partial<Task>): Promise<Task | null> {
+  const tasks = await getTasks()
+  const index = tasks.findIndex(t => t.id === id)
+
+  if (index === -1) return null
+
+  tasks[index] = { ...tasks[index], ...updates }
+  await set(KEYS.TASKS, tasks)
+
+  return tasks[index]
+}
+
+export async function deleteTask(id: string): Promise<boolean> {
+  const tasks = await getTasks()
+  const filtered = tasks.filter(t => t.id !== id)
+
+  if (filtered.length === tasks.length) return false
+
+  await set(KEYS.TASKS, filtered)
+  return true
+}
+
+export async function completeTask(id: string, xpEarned: number): Promise<Task | null> {
+  return updateTask(id, {
+    completed: true,
+    completedAt: new Date().toISOString(),
+    xpEarned
+  })
+}
+
+export async function getActiveTasks(): Promise<Task[]> {
+  const tasks = await getTasks()
+  return tasks.filter(t => !t.completed)
+}
+
+export async function getMorningTasks(): Promise<Task[]> {
+  const tasks = await getActiveTasks()
+  return tasks.filter(t => t.isMorningTask)
+}
+
+export async function getTasksByOutcome(outcomeId: string): Promise<Task[]> {
+  const tasks = await getTasks()
+  return tasks.filter(t => t.outcomeId === outcomeId)
+}
+
+export async function getHighLeverageTasks(minScore: number = 7): Promise<Task[]> {
+  const tasks = await getActiveTasks()
+  return tasks.filter(t => t.leverageScore >= minScore)
+}
