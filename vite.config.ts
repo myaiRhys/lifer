@@ -2,8 +2,10 @@ import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { VitePWA } from 'vite-plugin-pwa'
 
+const baseUrl = process.env.NODE_ENV === 'production' ? '/lifer/' : '/'
+
 export default defineConfig({
-  base: '/lifer/', // GitHub Pages subdirectory
+  base: baseUrl,
   plugins: [
     svelte(),
     VitePWA({
@@ -16,21 +18,21 @@ export default defineConfig({
         theme_color: '#1e293b',
         background_color: '#0f172a',
         display: 'standalone',
-        scope: '/lifer/',
-        start_url: '/lifer/',
+        scope: baseUrl,
+        start_url: baseUrl,
         icons: [
           {
-            src: '/lifer/icons/icon-192.svg',
+            src: `${baseUrl}icons/icon-192.svg`,
             sizes: '192x192',
             type: 'image/svg+xml'
           },
           {
-            src: '/lifer/icons/icon-512.svg',
+            src: `${baseUrl}icons/icon-512.svg`,
             sizes: '512x512',
             type: 'image/svg+xml'
           },
           {
-            src: '/lifer/icons/apple-touch-icon.svg',
+            src: `${baseUrl}icons/apple-touch-icon.svg`,
             sizes: '180x180',
             type: 'image/svg+xml'
           }
