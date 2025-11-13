@@ -155,4 +155,9 @@ export async function initializeStorage() {
   if (!await get(KEYS.TASKS)) await set(KEYS.TASKS, [])
   if (!await get(KEYS.OUTCOMES)) await set(KEYS.OUTCOMES, [])
   if (!await get(KEYS.HISTORY)) await set(KEYS.HISTORY, [])
+  if (!await get(KEYS.RECURRING_TASKS)) await set(KEYS.RECURRING_TASKS, [])
+
+  // Spawn today's recurring tasks
+  const { spawnTodaysRecurringTasks } = await import('./recurringTasks')
+  await spawnTodaysRecurringTasks()
 }
