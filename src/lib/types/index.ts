@@ -85,3 +85,81 @@ export interface HistoryRecord {
   dayOfWeek: number
   hourOfDay: number
 }
+
+export type AchievementRarity = "common" | "rare" | "epic" | "legendary"
+
+export interface Achievement {
+  id: string
+  name: string
+  description: string
+  icon: string
+  rarity: AchievementRarity
+  category: "streak" | "task" | "leverage" | "morning" | "level" | "practice" | "challenge"
+  condition: (state: UserState, history: HistoryRecord[]) => boolean
+  progress?: (state: UserState, history: HistoryRecord[]) => { current: number; total: number }
+  unlockedAt?: string
+}
+
+export interface Challenge {
+  id: string
+  name: string
+  description: string
+  icon: string
+  type: "daily" | "weekly"
+  difficulty: "easy" | "medium" | "hard"
+  xpReward: number
+  condition: (state: UserState, tasks: Task[], practices: Practice[]) => boolean
+  progress?: (state: UserState, tasks: Task[], practices: Practice[]) => { current: number; total: number }
+  completedAt?: string
+  expiresAt: string
+}
+
+export type PowerUpType = "xp_boost" | "streak_shield" | "double_xp" | "time_freeze" | "focus_boost"
+
+export interface PowerUp {
+  id: string
+  name: string
+  description: string
+  icon: string
+  type: PowerUpType
+  cost: number
+  duration?: number
+  multiplier?: number
+  isActive?: boolean
+  activatedAt?: string
+  expiresAt?: string
+}
+
+export interface PurchasedPowerUp {
+  id: string
+  powerUpType: PowerUpType
+  purchasedAt: string
+  usedAt?: string
+  expiresAt?: string
+  isActive: boolean
+}
+
+export interface FocusSession {
+  id: string
+  type: "pomodoro" | "deep_work"
+  duration: number
+  taskId?: string
+  startedAt: string
+  completedAt?: string
+  xpEarned: number
+  interrupted: boolean
+}
+
+export type Theme = "dark" | "light" | "ocean" | "fire" | "forest" | "sunset"
+
+export interface AppSettings {
+  theme: Theme
+  soundEnabled: boolean
+  notificationsEnabled: boolean
+  streakReminders: boolean
+  morningReminders: boolean
+  vibrationEnabled: boolean
+  pomodoroLength: number
+  shortBreakLength: number
+  longBreakLength: number
+}
