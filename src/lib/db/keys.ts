@@ -7,5 +7,6 @@ export const KEYS = {
   ACHIEVEMENTS: 'achievements',
   CHALLENGES: 'challenges',
   POWER_UPS: 'powerUps',
-  SETTINGS: 'settings'
+  SETTINGS: 'settings',
+  FOCUS_SESSIONS: 'focusSessions'
 } as const
