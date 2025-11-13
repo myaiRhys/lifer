@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { getTasks, createTask, updateTask, deleteTask, completeTask } from '../lib/db'
+  import { getTasks, createTask, updateTask, deleteTask, completeTask, createRecurringTaskTemplate, spawnTodaysRecurringTasks } from '../lib/db'
   import { getUserState, addXP } from '../lib/db/userState'
   import { checkAndUnlockAchievements } from '../lib/db/achievements'
   import { celebrateTaskComplete, showFloatingXP, hapticSuccess } from '../lib/animations'
@@ -21,6 +21,7 @@
   let description = ''
   let leverageScore: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 = 5
   let isMorningTask = false
+  let isRecurring = false
   let outcomeId = 'none'
 
   onMount(async () => {
@@ -40,13 +41,29 @@
   async function handleAddTask() {
     if (!title.trim()) return
 
-    await createTask({
-      title: title.trim(),
-      description: description.trim() || undefined,
-      leverageScore,
-      outcomeId,
-      isMorningTask
-    })
+    if (isRecurring) {
+      // Create recurring task template
+      await createRecurringTaskTemplate({
+        title: title.trim(),
+        description: description.trim() || undefined,
+        leverageScore,
+        outcomeId,
+        isMorningTask
+      })
+
+      // Spawn today's instance
+      await spawnTodaysRecurringTasks()
+    } else {
+      // Create one-time task
+      await createTask({
+        title: title.trim(),
+        description: description.trim() || undefined,
+        leverageScore,
+        outcomeId,
+        isMorningTask,
+        isRecurring: false
+      })
+    }
 
     resetForm()
     await loadTasks()
@@ -113,6 +130,7 @@
     description = task.description || ''
     leverageScore = task.leverageScore
     isMorningTask = task.isMorningTask
+    isRecurring = task.isRecurring
     showAddForm = true
   }
 
@@ -123,6 +141,7 @@
     description = ''
     leverageScore = 5
     isMorningTask = false
+    isRecurring = false
   }
 
   function getLeverageColor(score: number): string {
@@ -209,6 +228,20 @@
               Complete in first 90 minutes for bonus XP
             </p>
           </div>
+
+          <div>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                bind:checked={isRecurring}
+                class="w-5 h-5 rounded border-slate-600"
+              />
+              <span class="text-sm font-medium">Recurring (Daily)</span>
+            </label>
+            <p class="text-xs text-slate-500 mt-2">
+              Auto-creates this task every day
+            </p>
+          </div>
         </div>
 
         <div class="flex gap-3">
@@ -250,6 +283,9 @@
                   </span>
                   {#if task.isMorningTask}
                     <span class="text-amber-400 text-xs" title="Morning task">☀️</span>
+                  {/if}
+                  {#if task.isRecurring}
+                    <span class="text-blue-400 text-xs" title="Recurring daily">🔄</span>
                   {/if}
                 </div>
               </div>

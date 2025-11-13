@@ -8,5 +8,6 @@ export const KEYS = {
   CHALLENGES: 'challenges',
   POWER_UPS: 'powerUps',
   SETTINGS: 'settings',
-  FOCUS_SESSIONS: 'focusSessions'
+  FOCUS_SESSIONS: 'focusSessions',
+  RECURRING_TASKS: 'recurringTasks'
 } as const

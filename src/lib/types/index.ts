@@ -47,6 +47,19 @@ export interface Task {
   completedAt?: string
   xpEarned?: number
   createdAt: string
+  isRecurring: boolean
+  recurringTemplateId?: string
+}
+
+export interface RecurringTaskTemplate {
+  id: string
+  title: string
+  description?: string
+  leverageScore: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
+  outcomeId: string
+  isMorningTask: boolean
+  active: boolean
+  createdAt: string
 }
 
 export interface Practice {
