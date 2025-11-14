@@ -10,10 +10,12 @@
     logPractice,
     completeChore,
     uncompleteChore,
-    addXP
+    addXP,
+    getIdentity,
+    getTodayAlignment
   } from '../lib/db'
   import DailyChallenges from './DailyChallenges.svelte'
-  import type { UserState, Task, Practice, Chore } from '../lib/types'
+  import type { UserState, Task, Practice, Chore, Identity, IdentityAlignment } from '../lib/types'
 
   let userState: UserState | null = null
   let activeTasks: Task[] = []
@@ -22,6 +24,8 @@
   let showPracticeModal = false
   let selectedPractice: Practice | null = null
   let practiceLogValue: number = 0
+  let identity: Identity | null = null
+  let todayAlignment: IdentityAlignment | null = null
 
   onMount(async () => {
     await loadDashboard()
@@ -32,6 +36,8 @@
     activeTasks = await getActiveTasks()
     todaysPractices = await getTodaysPractices()
     todaysChores = await getTodaysChores()
+    identity = await getIdentity()
+    todayAlignment = await getTodayAlignment()
   }
 
   async function handleTaskToggle(task: Task) {
@@ -176,6 +182,52 @@
         </div>
       </div>
     </div>
+
+    <!-- Identity Widget -->
+    {#if identity}
+      <div class="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-blue-700/50 rounded-lg p-4 mb-6">
+        <div class="flex items-start justify-between">
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-2xl">🎯</span>
+              <h3 class="font-bold text-lg">Your Identity</h3>
+            </div>
+            <p class="text-lg mb-3">
+              I am a person who <span class="text-blue-400 font-semibold">{identity.statement}</span>
+            </p>
+            {#if todayAlignment}
+              <div class="flex items-center gap-4">
+                <div class="flex-1">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-sm text-slate-400">Today's Alignment</span>
+                    <span class="text-lg font-bold {todayAlignment.percentage >= 80 ? 'text-green-400' : todayAlignment.percentage >= 60 ? 'text-yellow-400' : 'text-red-400'}">
+                      {todayAlignment.percentage}%
+                    </span>
+                  </div>
+                  <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+                    <div
+                      class="h-full bg-gradient-to-r from-green-600 to-green-400 transition-all duration-500"
+                      style="width: {todayAlignment.percentage}%"
+                    />
+                  </div>
+                  <div class="flex items-center gap-3 mt-1 text-xs">
+                    <span class="text-green-400">↑ {todayAlignment.votesFor} for</span>
+                    <span class="text-red-400">↓ {todayAlignment.votesAgainst} against</span>
+                  </div>
+                </div>
+                <a
+                  href="#identity"
+                  on:click|preventDefault={() => window.dispatchEvent(new CustomEvent('navigate', { detail: 'identity' }))}
+                  class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors text-sm font-medium whitespace-nowrap"
+                >
+                  View Details →
+                </a>
+              </div>
+            {/if}
+          </div>
+        </div>
+      </div>
+    {/if}
 
     <!-- Leverage Warning -->
     {#if showLeverageWarning}

@@ -2,6 +2,7 @@ import { get, set } from 'idb-keyval'
 import { KEYS } from './keys'
 import type { Task } from '../types'
 import { addHistoryRecord } from './history'
+import { addIdentityVote, getIdentity } from './identity'
 
 function generateUUID(): string {
   return crypto.randomUUID()
@@ -81,6 +82,24 @@ export async function completeTask(id: string, xpEarned: number): Promise<Task |
       dayOfWeek: now.getDay(),
       hourOfDay: now.getHours()
     })
+
+    // Add identity vote (if identity exists)
+    const identity = await getIdentity()
+    if (identity) {
+      const context = task.leverageScore >= 7
+        ? `High-leverage task (${task.leverageScore}/10)`
+        : task.isMorningTask
+        ? 'Morning task'
+        : undefined
+
+      await addIdentityVote(
+        `Completed: ${task.title}`,
+        'task',
+        'for', // Task completion always votes FOR identity
+        task.id,
+        context
+      )
+    }
   }
 
   return updated

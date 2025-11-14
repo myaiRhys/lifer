@@ -1,6 +1,7 @@
 import { get, set } from 'idb-keyval'
 import { KEYS } from './keys'
 import type { Practice } from '../types'
+import { addIdentityVote, getIdentity, autoAddStreakEvidence } from './identity'
 
 export async function getPractices(): Promise<Practice[]> {
   const practices = await get(KEYS.PRACTICES)
@@ -97,6 +98,38 @@ export async function logPractice(id: string, value: number): Promise<Practice |
     lastLoggedAt: now,
     lastCompletedAt: todayCompleted ? now : practice.lastCompletedAt
   })
+
+  // Add identity vote (if identity exists)
+  const identity = await getIdentity()
+  if (identity && todayCompleted) {
+    const streakInfo = practice.type === 'positive'
+      ? currentStreak > 0 ? `${currentStreak}-day streak` : undefined
+      : cleanStreak > 0 ? `${cleanStreak}-day clean streak` : undefined
+
+    await addIdentityVote(
+      `Completed: ${practice.name}`,
+      'practice',
+      'for', // Practice completion votes FOR identity
+      practice.id,
+      streakInfo
+    )
+
+    // Auto-add streak evidence at milestones
+    if (practice.type === 'positive' && currentStreak > 0) {
+      await autoAddStreakEvidence(practice.id, practice.name, currentStreak)
+    } else if (practice.type === 'negative' && cleanStreak > 0) {
+      await autoAddStreakEvidence(practice.id, `${practice.name} (clean)`, cleanStreak)
+    }
+  } else if (identity && !todayCompleted && practice.type === 'negative') {
+    // Negative practice: failing to stay under target votes AGAINST identity
+    await addIdentityVote(
+      `Slipped: ${practice.name}`,
+      'practice',
+      'against',
+      practice.id,
+      `Exceeded target: ${value} > ${practice.target}`
+    )
+  }
 
   // Recalculate health stats after logging a practice
   const { calculateHealthStatsFromPractices } = await import('./userState')

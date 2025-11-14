@@ -280,6 +280,42 @@ export interface BodyDoublingSession {
   createdAt: string
 }
 
+// Identity-Based Habits (James Clear)
+export interface Identity {
+  id: string
+  statement: string // "I am a person who..."
+  createdAt: string
+  lastUpdated: string
+}
+
+export interface IdentityVote {
+  id: string
+  identityId: string
+  action: string
+  actionType: 'task' | 'practice' | 'chore' | 'focus' | 'other'
+  entityId?: string // ID of related task/practice/etc
+  direction: 'for' | 'against'
+  timestamp: string
+  context?: string
+}
+
+export interface IdentityEvidence {
+  id: string
+  identityId: string
+  description: string
+  category: 'achievement' | 'streak' | 'completion' | 'custom'
+  linkedEntityId?: string
+  addedAt: string
+}
+
+export interface IdentityAlignment {
+  date: string // YYYY-MM-DD
+  votesFor: number
+  votesAgainst: number
+  percentage: number // 0-100
+  totalVotes: number
+}
+
 export type Theme = "dark" | "light" | "ocean" | "fire" | "forest" | "sunset" | "military" | "cowboy" | "academic" | "cyberpunk" | "zen"
 
 export interface AppSettings {
