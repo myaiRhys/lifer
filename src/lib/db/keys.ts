@@ -34,5 +34,7 @@ export const KEYS = {
   HABIT_STACKS: 'habitStacks',
   HABIT_STACK_COMPLETIONS: 'habitStackCompletions',
   // Authenticity Tracker (Gabor Maté)
-  AUTHENTICITY_LOGS: 'authenticityLogs'
+  AUTHENTICITY_LOGS: 'authenticityLogs',
+  // Marginal Gains Visualizer (James Clear)
+  MARGINAL_GAIN_LOGS: 'marginalGainLogs'
 } as const
