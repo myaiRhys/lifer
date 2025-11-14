@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import Dashboard from './components/Dashboard.svelte'
+  import DashboardEnhanced from './components/DashboardEnhanced.svelte'
   import TaskList from './components/TaskList.svelte'
   import Chores from './components/Chores.svelte'
   import PowerUpShop from './components/PowerUpShop.svelte'
@@ -512,7 +513,7 @@
 
   <main class="p-4 max-w-7xl mx-auto">
     {#if currentView === 'dashboard'}
-      <Dashboard />
+      <DashboardEnhanced />
     {:else if currentView === 'tasks'}
       <TaskList />
     {:else if currentView === 'identity'}
