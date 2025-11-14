@@ -109,6 +109,11 @@ export interface Practice {
     satisfying: { score: number; reward?: string }
     totalScore: number
   }
+  // Never Miss Twice (James Clear)
+  consecutiveMisses?: number
+  lastMissDate?: string
+  recoveryCount?: number // How many times bounced back after a miss
+  atRisk?: boolean // True if missed once (warning state)
 }
 
 export interface Chore {
@@ -338,6 +343,18 @@ export interface IdentityAlignment {
   votesAgainst: number
   percentage: number // 0-100
   totalVotes: number
+}
+
+// Never Miss Twice System (James Clear)
+export interface RecoveryEvent {
+  id: string
+  practiceId: string
+  practiceName: string
+  missedDate: string // YYYY-MM-DD when they missed
+  recoveredDate: string // YYYY-MM-DD when they came back
+  missCount: number // How many consecutive misses before recovery (1 or 2)
+  recoveryStrategy?: string // What helped them bounce back
+  timestamp: string
 }
 
 export type Theme = "dark" | "light" | "ocean" | "fire" | "forest" | "sunset" | "military" | "cowboy" | "academic" | "cyberpunk" | "zen"

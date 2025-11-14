@@ -23,5 +23,7 @@ export const KEYS = {
   IDENTITY: 'identity',
   IDENTITY_VOTES: 'identityVotes',
   IDENTITY_EVIDENCE: 'identityEvidence',
-  IDENTITY_ALIGNMENT: 'identityAlignment'
+  IDENTITY_ALIGNMENT: 'identityAlignment',
+  // Never Miss Twice (James Clear)
+  RECOVERY_EVENTS: 'recoveryEvents'
 } as const

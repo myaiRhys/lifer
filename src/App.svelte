@@ -20,6 +20,7 @@
   import TaskPrioritizer from './components/TaskPrioritizer.svelte'
   import PersonalAnalytics from './components/PersonalAnalytics.svelte'
   import IdentityBuilder from './components/IdentityBuilder.svelte'
+  import NeverMissTwice from './components/NeverMissTwice.svelte'
   import { initializeStorage, getSettings, updateSettings } from './lib/db'
   import { applyTheme, getStoredTheme } from './lib/themes'
   import { notificationSystem } from './lib/notifications'
@@ -189,6 +190,12 @@
         on:click={() => currentView = 'identity'}
       >
         🎯 Identity
+      </button>
+      <button
+        class="px-4 py-2 rounded transition-colors whitespace-nowrap {currentView === 'recovery' ? 'bg-slate-700 text-blue-400' : 'hover:bg-slate-700'}"
+        on:click={() => currentView = 'recovery'}
+      >
+        🔥 Recovery
       </button>
       <button
         class="px-4 py-2 rounded transition-colors whitespace-nowrap {currentView === 'prioritizer' ? 'bg-slate-700 text-blue-400' : 'hover:bg-slate-700'}"
@@ -437,6 +444,8 @@
       <TaskList />
     {:else if currentView === 'identity'}
       <IdentityBuilder />
+    {:else if currentView === 'recovery'}
+      <NeverMissTwice />
     {:else if currentView === 'prioritizer'}
       <TaskPrioritizer />
     {:else if currentView === 'focus'}

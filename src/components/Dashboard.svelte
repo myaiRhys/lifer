@@ -12,7 +12,9 @@
     uncompleteChore,
     addXP,
     getIdentity,
-    getTodayAlignment
+    getTodayAlignment,
+    getAtRiskPractices,
+    getCriticalPractices
   } from '../lib/db'
   import DailyChallenges from './DailyChallenges.svelte'
   import type { UserState, Task, Practice, Chore, Identity, IdentityAlignment } from '../lib/types'
@@ -26,6 +28,8 @@
   let practiceLogValue: number = 0
   let identity: Identity | null = null
   let todayAlignment: IdentityAlignment | null = null
+  let atRiskPractices: Practice[] = []
+  let criticalPractices: Practice[] = []
 
   onMount(async () => {
     await loadDashboard()
@@ -38,6 +42,8 @@
     todaysChores = await getTodaysChores()
     identity = await getIdentity()
     todayAlignment = await getTodayAlignment()
+    atRiskPractices = await getAtRiskPractices()
+    criticalPractices = await getCriticalPractices()
   }
 
   async function handleTaskToggle(task: Task) {
@@ -117,6 +123,57 @@
 
 <div class="max-w-6xl mx-auto">
   <h2 class="text-3xl font-bold mb-6">Dashboard</h2>
+
+  <!-- Never Miss Twice Warnings -->
+  {#if criticalPractices.length > 0}
+    <div class="bg-red-900/30 border-2 border-red-600 rounded-lg p-4 mb-6 animate-pulse">
+      <div class="flex items-start gap-3">
+        <span class="text-3xl">🚨</span>
+        <div class="flex-1">
+          <h3 class="text-lg font-bold text-red-300 mb-1">CRITICAL: {criticalPractices.length} Habit{criticalPractices.length > 1 ? 's' : ''} Need Immediate Attention</h3>
+          <p class="text-sm text-red-200 mb-2">
+            You've missed these habits 2+ days in a row. This is the line between staying on track and losing the habit entirely.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-2">
+            {#each criticalPractices as practice}
+              <span class="px-2 py-1 bg-red-800 rounded text-xs font-medium">{practice.name}</span>
+            {/each}
+          </div>
+          <a
+            href="#"
+            on:click|preventDefault={() => window.location.hash = 'recovery'}
+            class="inline-block px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded transition-colors"
+          >
+            View Recovery Plan →
+          </a>
+        </div>
+      </div>
+    </div>
+  {:else if atRiskPractices.length > 0}
+    <div class="bg-yellow-900/30 border border-yellow-700 rounded-lg p-4 mb-6">
+      <div class="flex items-start gap-3">
+        <span class="text-2xl">⚠️</span>
+        <div class="flex-1">
+          <h3 class="text-lg font-bold text-yellow-300 mb-1">At Risk: {atRiskPractices.length} Habit{atRiskPractices.length > 1 ? 's' : ''} Missed Once</h3>
+          <p class="text-sm text-yellow-200 mb-2">
+            Missing once is an accident. Get back on track today to keep your streaks alive.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-2">
+            {#each atRiskPractices as practice}
+              <span class="px-2 py-1 bg-yellow-800 rounded text-xs font-medium">{practice.name}</span>
+            {/each}
+          </div>
+          <a
+            href="#"
+            on:click|preventDefault={() => window.location.hash = 'recovery'}
+            class="inline-block px-3 py-1.5 bg-yellow-600 hover:bg-yellow-500 text-black font-semibold rounded text-sm transition-colors"
+          >
+            See Recovery Tips →
+          </a>
+        </div>
+      </div>
+    </div>
+  {/if}
 
   {#if userState}
     <!-- Top Stats Grid -->

@@ -131,9 +131,13 @@ export async function logPractice(id: string, value: number): Promise<Practice |
     )
   }
 
+  // Update Never Miss Twice recovery tracking
+  const { updatePracticeRecoveryStatus } = await import('./recovery')
+  const updatedResult = await updatePracticeRecoveryStatus(result || practice, todayCompleted)
+
   // Recalculate health stats after logging a practice
   const { calculateHealthStatsFromPractices } = await import('./userState')
   await calculateHealthStatsFromPractices()
 
-  return result
+  return updatedResult
 }
