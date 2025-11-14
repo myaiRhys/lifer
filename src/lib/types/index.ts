@@ -455,6 +455,27 @@ export interface AuthenticityLog {
   createdAt: string
 }
 
+// Marginal Gains Visualizer (James Clear)
+export interface MarginalGainLog {
+  id: string
+  date: string // YYYY-MM-DD
+  category: 'skill' | 'health' | 'productivity' | 'relationship' | 'mindset' | 'other'
+  description: string // The small improvement made
+  improvementPercent: number // Estimated % improvement (typically 1-5%)
+  practiceId?: string // Optional link to practice
+  createdAt: string
+}
+
+export interface MarginalGainStats {
+  totalDays: number // Days with logged improvements
+  totalImprovements: number // Number of small wins logged
+  avgDailyImprovement: number // Average % improvement per day
+  currentMultiplier: number // 1.01^totalDays
+  categoryBreakdown: { category: string; count: number; avgImprovement: number }[]
+  longestStreak: number // Consecutive days with improvements
+  currentStreak: number // Current consecutive days
+}
+
 export type Theme = "dark" | "light" | "ocean" | "fire" | "forest" | "sunset" | "military" | "cowboy" | "academic" | "cyberpunk" | "zen"
 
 export interface AppSettings {

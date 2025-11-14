@@ -25,6 +25,7 @@
   import TwoMinuteGateway from './components/TwoMinuteGateway.svelte'
   import HabitStackBuilder from './components/HabitStackBuilder.svelte'
   import AuthenticityTracker from './components/AuthenticityTracker.svelte'
+  import MarginalGainsVisualizer from './components/MarginalGainsVisualizer.svelte'
   import { initializeStorage, getSettings, updateSettings } from './lib/db'
   import { applyTheme, getStoredTheme } from './lib/themes'
   import { notificationSystem } from './lib/notifications'
@@ -224,6 +225,12 @@
         on:click={() => currentView = 'authenticity'}
       >
         🌿 Authenticity
+      </button>
+      <button
+        class="px-4 py-2 rounded transition-colors whitespace-nowrap {currentView === 'marginal-gains' ? 'bg-slate-700 text-blue-400' : 'hover:bg-slate-700'}"
+        on:click={() => currentView = 'marginal-gains'}
+      >
+        📈 Marginal Gains
       </button>
       <button
         class="px-4 py-2 rounded transition-colors whitespace-nowrap {currentView === 'prioritizer' ? 'bg-slate-700 text-blue-400' : 'hover:bg-slate-700'}"
@@ -482,6 +489,8 @@
       <HabitStackBuilder />
     {:else if currentView === 'authenticity'}
       <AuthenticityTracker />
+    {:else if currentView === 'marginal-gains'}
+      <MarginalGainsVisualizer />
     {:else if currentView === 'prioritizer'}
       <TaskPrioritizer />
     {:else if currentView === 'focus'}
