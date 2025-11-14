@@ -61,6 +61,24 @@
       `
     },
     {
+      title: 'Identity: Who Are You Becoming?',
+      emoji: '🎯',
+      content: `
+        <p class="mb-4"><strong>James Clear's insight:</strong> "Every action you take is a vote for the type of person you wish to become."</p>
+        <p class="mb-4">Focus on <strong>who you want to be</strong>, not just what you want to achieve.</p>
+        <p class="mb-4"><strong>Example:</strong> "I am a person who..."
+          <ul class="list-disc list-inside space-y-1 ml-4 mt-2 text-sm">
+            <li>never misses twice</li>
+            <li>completes high-leverage work every morning</li>
+            <li>chooses discipline over regret</li>
+            <li>invests in 1% daily improvements</li>
+          </ul>
+        </p>
+        <p class="mb-2">Every task and practice you complete will be a <strong>vote FOR your identity</strong>. Your goal: 80%+ alignment every day.</p>
+        <p class="text-sm text-slate-400">You'll set this up after onboarding, but keep it in mind as you build your system.</p>
+      `
+    },
+    {
       title: 'Gamification & Growth',
       emoji: '⚡',
       content: `

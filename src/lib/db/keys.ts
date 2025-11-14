@@ -18,5 +18,10 @@ export const KEYS = {
   MORNING_SYNCS: 'morningSyncs',
   COUPLE_REWARDS: 'coupleRewards',
   OUTCOME_NODES: 'outcomeNodes',
-  BODY_DOUBLING_SESSIONS: 'bodyDoublingSessions'
+  BODY_DOUBLING_SESSIONS: 'bodyDoublingSessions',
+  // Identity-based habits (James Clear)
+  IDENTITY: 'identity',
+  IDENTITY_VOTES: 'identityVotes',
+  IDENTITY_EVIDENCE: 'identityEvidence',
+  IDENTITY_ALIGNMENT: 'identityAlignment'
 } as const
