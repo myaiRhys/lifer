@@ -107,8 +107,9 @@
       />
 
       <div class="mb-3">
-        <label class="block text-sm font-medium mb-2">Category</label>
+        <label for="evidence-category" class="block text-sm font-medium mb-2">Category</label>
         <select
+          id="evidence-category"
           bind:value={newCategory}
           class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:outline-none focus:border-blue-500"
         >

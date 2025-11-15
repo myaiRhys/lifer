@@ -18,11 +18,23 @@
     visible = false
     onClose()
   }
+
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.key === 'Escape') {
+      handleClose()
+    }
+  }
 </script>
 
 {#if visible}
-  <div class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 animate-fade-in" on:click={handleClose}>
-    <div class="relative bg-gradient-to-br from-yellow-500/95 via-orange-500/95 to-red-600/95 backdrop-blur-2xl rounded-3xl p-10 max-w-md animate-scale-in border-4 border-yellow-300/50 shadow-2xl shadow-yellow-500/50" on:click|stopPropagation>
+  <div
+    class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 animate-fade-in"
+    role="dialog"
+    aria-modal="true"
+    on:click={handleClose}
+    on:keydown={handleKeydown}
+  >
+    <div class="relative bg-gradient-to-br from-yellow-500/95 via-orange-500/95 to-red-600/95 backdrop-blur-2xl rounded-3xl p-10 max-w-md animate-scale-in border-4 border-yellow-300/50 shadow-2xl shadow-yellow-500/50" on:click|stopPropagation role="document">
       <!-- Glow Effects -->
       <div class="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-3xl blur-2xl opacity-50 -z-10"></div>
 
