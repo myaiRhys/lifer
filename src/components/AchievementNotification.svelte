@@ -32,14 +32,17 @@
 </script>
 
 {#if visible && achievement}
-  <div class="fixed top-4 right-4 z-50 animate-slide-in">
-    <div class="bg-gradient-to-br {getRarityColor(achievement.rarity)} rounded-xl p-4 shadow-2xl max-w-sm border-2 border-white/20">
-      <div class="flex items-start gap-3">
-        <div class="text-4xl">{achievement.icon}</div>
+  <div class="fixed top-6 right-6 z-50 animate-slide-in">
+    <div class="relative bg-gradient-to-br {getRarityColor(achievement.rarity)} rounded-2xl p-6 shadow-2xl max-w-sm border-4 border-white/30 backdrop-blur-xl">
+      <!-- Glow Effect -->
+      <div class="absolute -inset-1 bg-gradient-to-br {getRarityColor(achievement.rarity)} rounded-2xl blur-xl opacity-50 -z-10"></div>
+
+      <div class="flex items-start gap-4">
+        <div class="text-5xl drop-shadow-2xl animate-bounce">{achievement.icon}</div>
         <div class="flex-1">
-          <div class="text-xs text-white/80 uppercase tracking-wider mb-1">Achievement Unlocked!</div>
-          <h3 class="font-bold text-white text-lg">{achievement.name}</h3>
-          <p class="text-white/90 text-sm">{achievement.description}</p>
+          <div class="text-xs text-white/90 uppercase tracking-widest mb-2 font-black">🏆 Achievement Unlocked!</div>
+          <h3 class="font-black text-white text-xl mb-1 drop-shadow-lg">{achievement.name}</h3>
+          <p class="text-white/95 text-base font-medium">{achievement.description}</p>
         </div>
       </div>
     </div>
