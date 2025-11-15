@@ -237,25 +237,26 @@
 
 <div class="max-w-4xl mx-auto">
   <!-- Header -->
-  <div class="flex justify-between items-center mb-6">
-    <div>
-      <h2 class="text-2xl font-bold">Tasks</h2>
-      <p class="text-slate-400 text-sm mt-1">
-        {activeTasks.length} active · {completedTasks.length} completed
+  <div class="flex justify-between items-center mb-8 animate-fade-in-scale">
+    <div class="animate-slide-in-left">
+      <h2 class="text-4xl font-black bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Tasks</h2>
+      <p class="text-slate-300 text-base mt-2 font-medium">
+        <span class="text-blue-400 font-bold">{activeTasks.length}</span> active ·
+        <span class="text-green-400 font-bold">{completedTasks.length}</span> completed
       </p>
     </div>
     <button
       on:click={() => showAddForm = !showAddForm}
-      class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors"
+      class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-2xl font-bold text-lg shadow-2xl shadow-blue-500/50 hover:shadow-purple-500/50 transition-all hover:scale-105 border-2 border-blue-400/30 animate-slide-in-right"
     >
-      {showAddForm ? 'Cancel' : '+ New Task'}
+      {showAddForm ? '❌ Cancel' : '✨ New Task'}
     </button>
   </div>
 
   <!-- Add/Edit Form -->
   {#if showAddForm}
-    <div class="bg-slate-800 border border-slate-700 rounded-lg p-4 mb-6">
-      <h3 class="font-semibold mb-4">{editingTask ? 'Edit Task' : 'New Task'}</h3>
+    <div class="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-xl border-2 border-purple-500/50 rounded-2xl p-6 mb-8 shadow-2xl shadow-purple-500/30 animate-fade-in-scale">
+      <h3 class="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">{editingTask ? '✏️ Edit Task' : '✨ New Task'}</h3>
 
       <div class="space-y-4">
         <div>
@@ -352,18 +353,18 @@
           </div>
         {/if}
 
-        <div class="flex gap-3">
+        <div class="flex gap-4">
           <button
             on:click={editingTask ? handleUpdateTask : handleAddTask}
-            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors"
+            class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-xl font-bold text-lg shadow-xl shadow-blue-500/50 hover:shadow-purple-500/50 transition-all hover:scale-105 border-2 border-blue-400/30"
           >
-            {editingTask ? 'Update Task' : 'Add Task'}
+            {editingTask ? '💾 Update Task' : '✨ Add Task'}
           </button>
           <button
             on:click={resetForm}
-            class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg font-medium transition-colors"
+            class="px-6 py-3 bg-slate-700/50 hover:bg-slate-600/50 rounded-xl font-bold text-lg backdrop-blur-sm transition-all hover:scale-105 border-2 border-slate-500/30"
           >
-            Cancel
+            ❌ Cancel
           </button>
         </div>
       </div>
@@ -372,48 +373,50 @@
 
   <!-- Active Tasks -->
   {#if activeTasks.length > 0}
-    <div class="space-y-3 mb-6">
-      {#each activeTasks as task (task.id)}
-        <div class="bg-slate-800 border border-slate-700 rounded-lg p-4 hover:border-slate-600 transition-colors">
-          <div class="flex items-start gap-3">
+    <div class="space-y-4 mb-6">
+      {#each activeTasks as task, index (task.id)}
+        <div class="group relative bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-xl border-2 {task.leverageScore >= 8 ? 'border-red-500/50 hover:border-red-400 hover:shadow-2xl hover:shadow-red-500/30' : task.leverageScore >= 5 ? 'border-orange-500/50 hover:border-orange-400 hover:shadow-2xl hover:shadow-orange-500/30' : 'border-blue-500/50 hover:border-blue-400 hover:shadow-2xl hover:shadow-blue-500/30'} rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02] animate-fade-in-up {index === 0 ? 'stagger-1' : index === 1 ? 'stagger-2' : index === 2 ? 'stagger-3' : index === 3 ? 'stagger-4' : index === 4 ? 'stagger-5' : 'stagger-6'} opacity-0">
+          <div class="flex items-start gap-4">
             <button
               on:click={(e) => handleCompleteTask(task, e)}
-              class="mt-1 w-5 h-5 border-2 border-slate-600 rounded hover:border-green-500 transition-colors flex-shrink-0"
+              class="mt-1 w-8 h-8 border-3 border-slate-500 rounded-xl hover:border-green-400 hover:bg-green-500/20 hover:scale-110 transition-all duration-200 flex-shrink-0 flex items-center justify-center group-hover:border-green-400"
               title="Complete task"
-            />
+            >
+              <span class="opacity-0 group-hover:opacity-100 text-green-400 text-sm transition-opacity">✓</span>
+            </button>
 
             <div class="flex-1 min-w-0">
-              <div class="flex items-start justify-between gap-2">
-                <h3 class="font-medium">{task.title}</h3>
-                <div class="flex items-center gap-2 flex-shrink-0">
-                  <span class="{getLeverageColor(task.leverageScore)} font-bold text-sm">
+              <div class="flex items-start justify-between gap-3">
+                <h3 class="text-xl font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-400 group-hover:bg-clip-text transition-all">{task.title}</h3>
+                <div class="flex items-center gap-3 flex-shrink-0">
+                  <div class="px-4 py-2 rounded-xl font-black text-lg bg-gradient-to-br {task.leverageScore >= 8 ? 'from-red-600 to-red-700 shadow-lg shadow-red-500/50' : task.leverageScore >= 5 ? 'from-orange-600 to-orange-700 shadow-lg shadow-orange-500/50' : 'from-blue-600 to-blue-700 shadow-lg shadow-blue-500/50'} border border-white/20">
                     L{task.leverageScore}
-                  </span>
+                  </div>
                   {#if task.isMorningTask}
-                    <span class="text-amber-400 text-xs" title="Morning task">☀️</span>
+                    <span class="text-3xl animate-pulse" title="Morning task">☀️</span>
                   {/if}
                   {#if task.isRecurring}
-                    <span class="text-blue-400 text-xs" title="Recurring daily">🔄</span>
+                    <span class="text-2xl text-blue-400" title="Recurring daily">🔄</span>
                   {/if}
                 </div>
               </div>
 
               {#if task.description}
-                <p class="text-sm text-slate-400 mt-1">{task.description}</p>
+                <p class="text-base text-slate-300 mt-3 leading-relaxed">{task.description}</p>
               {/if}
 
-              <div class="flex gap-2 mt-3">
+              <div class="flex gap-3 mt-4">
                 <button
                   on:click={() => startEdit(task)}
-                  class="text-xs text-blue-400 hover:text-blue-300"
+                  class="px-4 py-2 text-sm font-medium text-blue-300 hover:text-blue-200 bg-blue-900/30 hover:bg-blue-800/50 rounded-lg transition-all hover:scale-105"
                 >
-                  Edit
+                  ✏️ Edit
                 </button>
                 <button
                   on:click={() => handleDeleteTask(task.id)}
-                  class="text-xs text-red-400 hover:text-red-300"
+                  class="px-4 py-2 text-sm font-medium text-red-300 hover:text-red-200 bg-red-900/30 hover:bg-red-800/50 rounded-lg transition-all hover:scale-105"
                 >
-                  Delete
+                  🗑️ Delete
                 </button>
               </div>
             </div>
@@ -465,11 +468,11 @@
 
 <!-- Quick Capture Modal -->
 {#if showQuickCapture}
-  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" on:click={() => showQuickCapture = false}>
-    <div class="bg-slate-800 border-2 border-blue-500 rounded-lg p-6 max-w-lg w-full" on:click|stopPropagation>
-      <div class="mb-4">
-        <h3 class="text-xl font-bold mb-2">Quick Capture</h3>
-        <p class="text-sm text-slate-400">Press <kbd class="px-2 py-1 bg-slate-700 rounded text-xs">Ctrl+K</kbd> or <kbd class="px-2 py-1 bg-slate-700 rounded text-xs">⌘K</kbd> anytime</p>
+  <div class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4" on:click={() => showQuickCapture = false}>
+    <div class="bg-gradient-to-br from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-2 border-blue-500/80 rounded-2xl p-8 max-w-lg w-full shadow-2xl shadow-blue-500/50 animate-in" on:click|stopPropagation>
+      <div class="mb-6">
+        <h3 class="text-3xl font-black mb-3 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">⚡ Quick Capture</h3>
+        <p class="text-base text-slate-300">Press <kbd class="px-3 py-1.5 bg-slate-700/80 rounded-lg text-sm font-mono border border-slate-500">Ctrl+K</kbd> or <kbd class="px-3 py-1.5 bg-slate-700/80 rounded-lg text-sm font-mono border border-slate-500">⌘K</kbd> anytime</p>
       </div>
 
       <form on:submit|preventDefault={handleQuickCapture}>
@@ -478,31 +481,31 @@
           bind:value={quickTitle}
           placeholder="What needs to be done?"
           autofocus
-          class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-lg focus:outline-none focus:border-blue-500 mb-4"
+          class="w-full bg-slate-900/80 border-2 border-slate-600 rounded-xl px-5 py-4 text-xl focus:outline-none focus:border-blue-400 focus:shadow-lg focus:shadow-blue-500/30 mb-5 transition-all placeholder-slate-500"
         />
 
-        <div class="bg-slate-900 rounded-lg p-3 mb-4 text-sm text-slate-400">
-          <div class="mb-1">Defaults:</div>
-          <ul class="list-disc list-inside space-y-1">
+        <div class="bg-gradient-to-r from-slate-900/80 to-slate-800/80 rounded-xl p-4 mb-6 text-base text-slate-300 border border-slate-700/50">
+          <div class="mb-2 font-bold text-blue-400">Defaults:</div>
+          <ul class="list-disc list-inside space-y-1.5">
             <li>Leverage: 5 (medium)</li>
             <li>You can edit details after creating</li>
           </ul>
         </div>
 
-        <div class="flex gap-3">
+        <div class="flex gap-4">
           <button
             type="button"
-            class="flex-1 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg font-medium transition-colors"
+            class="flex-1 py-3 bg-slate-700/50 hover:bg-slate-600/50 rounded-xl font-bold text-lg backdrop-blur-sm transition-all hover:scale-105 border-2 border-slate-500/30"
             on:click={() => showQuickCapture = false}
           >
             Cancel (Esc)
           </button>
           <button
             type="submit"
-            class="flex-1 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg font-medium transition-colors"
+            class="flex-1 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-xl font-bold text-lg shadow-xl shadow-blue-500/50 hover:shadow-purple-500/50 transition-all hover:scale-105 border-2 border-blue-400/30 disabled:opacity-50 disabled:scale-100"
             disabled={!quickTitle.trim()}
           >
-            Create Task (Enter)
+            Create (Enter)
           </button>
         </div>
       </form>
