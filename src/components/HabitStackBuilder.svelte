@@ -167,6 +167,26 @@
     showCreateModal = true
   }
 
+  async function handleCompleteStack(stackId: string) {
+    const progress = stackProgress.get(stackId)
+    if (!progress) return
+
+    const fullChainCompleted = progress.progressPercentage === 100
+
+    await logHabitStackCompletion(
+      stackId,
+      progress.completedLinks,
+      fullChainCompleted
+    )
+
+    // Show celebration if full chain completed
+    if (fullChainCompleted) {
+      alert('🎉 Habit Stack Complete! All habits in the chain finished!')
+    }
+
+    await loadData()
+  }
+
   function formatTransitionTime(seconds: number): string {
     if (seconds < 60) return `${seconds}s`
     const minutes = Math.floor(seconds / 60)
@@ -275,12 +295,26 @@
                 <span>Today's Progress</span>
                 <span>{progress.completedLinks.length}/{progress.totalLinks} ({progress.progressPercentage}%)</span>
               </div>
-              <div class="w-full bg-slate-700 rounded-full h-2">
+              <div class="w-full bg-slate-700 rounded-full h-2 mb-3">
                 <div
                   class="bg-blue-500 h-2 rounded-full transition-all"
                   style="width: {progress.progressPercentage}%"
                 />
               </div>
+
+              <!-- Complete Stack Button -->
+              {#if progress.progressPercentage > 0}
+                <button
+                  on:click={() => handleCompleteStack(stack.id)}
+                  class="w-full px-4 py-2 {progress.progressPercentage === 100 ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500' : 'bg-slate-700 hover:bg-slate-600'} rounded-lg font-medium transition-all text-sm"
+                >
+                  {#if progress.progressPercentage === 100}
+                    🎉 Complete Stack & Celebrate
+                  {:else}
+                    📊 Log Progress ({progress.progressPercentage}%)
+                  {/if}
+                </button>
+              {/if}
             </div>
 
             <!-- Habit Chain Visualization -->
