@@ -2,6 +2,7 @@
   import { onMount } from 'svelte'
   import { getOutcomes, createOutcome, updateOutcome, deleteOutcome, archiveOutcome, completeOutcome } from '../lib/db'
   import type { Outcome } from '../lib/types'
+  import EmptyState from './shared/EmptyState.svelte'
 
   let outcomes: Outcome[] = []
   let showCreateModal = false
@@ -155,20 +156,14 @@
   </div>
 
   {#if outcomes.length === 0}
-    <div class="bg-slate-800 border border-slate-700 rounded-lg p-12 text-center">
-      <div class="text-6xl mb-4">🎯</div>
-      <h3 class="text-xl font-semibold mb-2">No Outcomes Yet</h3>
-      <p class="text-slate-400 mb-6">
-        Outcomes are the meaningful results you want to achieve.<br />
-        Each task should be linked to an outcome to ensure you're working on what matters.
-      </p>
-      <button
-        class="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg font-medium transition-colors"
-        on:click={openCreateModal}
-      >
-        Create Your First Outcome
-      </button>
-    </div>
+    <EmptyState
+      icon="🎯"
+      title="No Outcomes Yet"
+      description="Outcomes are the meaningful results you want to achieve. Each task should be linked to an outcome to ensure you're working on what matters."
+      actionText="Create Your First Outcome"
+      onAction={openCreateModal}
+      gradient="from-indigo-500 to-purple-500"
+    />
   {:else}
     <!-- Active Outcomes -->
     {#if activeOutcomes.length > 0}

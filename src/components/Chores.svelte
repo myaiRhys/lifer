@@ -2,6 +2,7 @@
   import { onMount } from 'svelte'
   import { getChores, createChore, updateChore, deleteChore, completeChore, uncompleteChore } from '../lib/db'
   import type { Chore } from '../lib/types'
+  import EmptyState from './shared/EmptyState.svelte'
 
   let chores: Chore[] = []
   let showAddForm = false
@@ -401,9 +402,11 @@
   {/if}
 
   {#if chores.length === 0}
-    <div class="text-center py-12 bg-slate-800 border border-slate-700 rounded-lg">
-      <p class="text-lg text-slate-400 mb-4">No chores yet</p>
-      <p class="text-sm text-slate-500">Click "Add Chore" to create your first chore</p>
-    </div>
+    <EmptyState
+      icon="🏠"
+      title="No chores yet"
+      description="Click 'Add Chore' to create your first chore"
+      gradient="from-orange-500 to-amber-500"
+    />
   {/if}
 </div>

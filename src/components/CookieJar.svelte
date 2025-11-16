@@ -11,6 +11,7 @@
     getForgottenVictories
   } from '../lib/db'
   import type { CookieJarVictory, CookieJarStats, VictoryEmotion } from '../lib/types'
+  import EmptyState from './shared/EmptyState.svelte'
 
   let victories: CookieJarVictory[] = []
   let stats: CookieJarStats | null = null
@@ -356,19 +357,14 @@
       {/each}
     </div>
   {:else}
-    <div class="text-center py-16 animate-fade-in-up stagger-5 opacity-0">
-      <div class="text-6xl mb-4">🍪</div>
-      <p class="text-2xl font-bold text-slate-400 mb-2">Your Cookie Jar is empty</p>
-      <p class="text-slate-500 mb-6">
-        Start by adding your greatest victories. Every achievement, every hard moment you overcame, belongs here.
-      </p>
-      <button
-        on:click={() => showAddForm = true}
-        class="px-8 py-4 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 rounded-2xl font-bold text-xl shadow-2xl shadow-orange-500/50 transition-all hover:scale-105 border-2 border-orange-400/30"
-      >
-        ✨ Add Your First Victory
-      </button>
-    </div>
+    <EmptyState
+      icon="🍪"
+      title="Your Cookie Jar is empty"
+      description="Start by adding your greatest victories. Every achievement, every hard moment you overcame, belongs here."
+      actionText="✨ Add Your First Victory"
+      onAction={() => showAddForm = true}
+      gradient="from-orange-600 to-red-600"
+    />
   {/if}
 </div>
 
