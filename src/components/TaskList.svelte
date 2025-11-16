@@ -9,6 +9,7 @@
   import LevelUpModal from './LevelUpModal.svelte'
   import AchievementNotification from './AchievementNotification.svelte'
   import FourLawsOptimizer from './FourLawsOptimizer.svelte'
+  import EmptyState from './shared/EmptyState.svelte'
 
   let tasks: Task[] = []
   let showAddForm = false
@@ -425,10 +426,12 @@
       {/each}
     </div>
   {:else}
-    <div class="text-center py-12 text-slate-500">
-      <p class="text-lg">No active tasks</p>
-      <p class="text-sm mt-2">Click "New Task" to add your first high-leverage task</p>
-    </div>
+    <EmptyState
+      icon="✅"
+      title="No active tasks"
+      description="Click 'New Task' to add your first high-leverage task"
+      gradient="from-blue-500 to-purple-500"
+    />
   {/if}
 
   <!-- Completed Tasks -->

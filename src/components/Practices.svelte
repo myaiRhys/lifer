@@ -2,6 +2,7 @@
   import { onMount } from 'svelte'
   import { getPractices, logPractice, logPracticeGateway, setPracticeGatewayVersion, removePracticeGatewayVersion } from '../lib/db'
   import type { Practice } from '../lib/types'
+  import EmptyState from './shared/EmptyState.svelte'
 
   let practices: Practice[] = []
   let selectedPractice: Practice | null = null
@@ -150,13 +151,12 @@
   </div>
 
   {#if practices.length === 0}
-    <div class="bg-slate-800 border border-slate-700 rounded-lg p-12 text-center">
-      <div class="text-6xl mb-4">♻️</div>
-      <h3 class="text-xl font-semibold mb-2">No Practices Yet</h3>
-      <p class="text-slate-400">
-        Practices are daily habits that compound over time. Your core practices should be automatically loaded.
-      </p>
-    </div>
+    <EmptyState
+      icon="♻️"
+      title="No Practices Yet"
+      description="Practices are daily habits that compound over time. Your core practices should be automatically loaded."
+      gradient="from-green-500 to-emerald-500"
+    />
   {:else}
     <!-- Today's Practices -->
     {#if todaysPractices.length > 0}
