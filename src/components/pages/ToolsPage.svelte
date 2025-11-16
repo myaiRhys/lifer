@@ -1,12 +1,13 @@
 <script lang="ts">
   import LoadingSkeleton from '../shared/LoadingSkeleton.svelte'
 
-  type Tool = 'prioritizer' | 'cookie-jar' | 'seasons' | 'shop' | 'couples'
+  type Tool = 'identity' | 'prioritizer' | 'cookie-jar' | 'seasons' | 'shop' | 'couples'
 
   let activeTool: Tool | null = null
 
   // Lazy load tool components only when selected
   const componentMap: Record<Tool, () => Promise<any>> = {
+    identity: () => import('../IdentityBuilder.svelte'),
     prioritizer: () => import('../TaskPrioritizer.svelte'),
     'cookie-jar': () => import('../CookieJar.svelte'),
     seasons: () => import('../Seasons.svelte'),
@@ -18,12 +19,20 @@
 
   const tools = [
     {
+      id: 'identity',
+      name: 'Identity Builder',
+      icon: '🎯',
+      description: 'Define who you are becoming with identity-based habits',
+      gradient: 'from-blue-600 to-indigo-600',
+      shortcut: '1'
+    },
+    {
       id: 'prioritizer',
       name: 'AI Prioritizer',
       icon: '🤖',
       description: 'Let AI help you prioritize tasks by leverage and urgency',
       gradient: 'from-cyan-600 to-blue-600',
-      shortcut: '1'
+      shortcut: '2'
     },
     {
       id: 'cookie-jar',
@@ -31,7 +40,7 @@
       icon: '🍪',
       description: 'Store your wins for motivation when you need it most',
       gradient: 'from-amber-600 to-orange-600',
-      shortcut: '2'
+      shortcut: '3'
     },
     {
       id: 'seasons',
@@ -39,7 +48,7 @@
       icon: '🌍',
       description: 'Align your goals with natural energy cycles',
       gradient: 'from-emerald-600 to-teal-600',
-      shortcut: '3'
+      shortcut: '4'
     },
     {
       id: 'shop',
@@ -47,7 +56,7 @@
       icon: '🛒',
       description: 'Unlock rewards and bonuses with your XP',
       gradient: 'from-purple-600 to-pink-600',
-      shortcut: '4'
+      shortcut: '5'
     },
     {
       id: 'couples',
@@ -55,7 +64,7 @@
       icon: '💑',
       description: 'Share progress and accountability with your partner',
       gradient: 'from-rose-600 to-red-600',
-      shortcut: '5'
+      shortcut: '6'
     }
   ] as const
 
@@ -68,7 +77,7 @@
     } else {
       // Number keys to open tools
       const num = parseInt(e.key)
-      if (num >= 1 && num <= 5) {
+      if (num >= 1 && num <= 6) {
         activeTool = tools[num - 1].id as Tool
       }
     }
@@ -88,7 +97,7 @@
         <p class="text-slate-300 text-sm md:text-lg">Powerful features to optimize your growth</p>
       </div>
       <div class="text-xs text-slate-500 bg-slate-800/50 px-4 py-2 rounded-xl border border-slate-700/50 hidden lg:block">
-        <kbd class="font-mono">1-5</kbd> to open • <kbd class="font-mono">ESC</kbd> to close
+        <kbd class="font-mono">1-6</kbd> to open • <kbd class="font-mono">ESC</kbd> to close
       </div>
     </div>
 
