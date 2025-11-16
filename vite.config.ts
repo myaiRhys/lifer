@@ -1,15 +1,18 @@
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 import { VitePWA } from 'vite-plugin-pwa'
 
-// Use capital L to match GitHub Pages URL
-// GitHub provides: https://myairhys.github.io/Lifer/
-const baseUrl = '/Lifer/'
+// Use lowercase to match GitHub Pages URL
+// GitHub provides: https://myairhys.github.io/lifer/
+const baseUrl = '/lifer/'
 
 export default defineConfig({
   base: baseUrl,
   plugins: [
-    svelte(),
+    svelte({
+      preprocess: vitePreprocess()
+    }),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['icons/*.svg', 'robots.txt'],
