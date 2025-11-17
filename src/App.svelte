@@ -331,8 +331,18 @@
   <!-- Settings Modal -->
   {#if showSettings && settings}
     <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" on:click={() => showSettings = false}>
-      <div class="bg-slate-800 border border-slate-700 rounded-lg p-6 max-w-md w-full" on:click|stopPropagation>
-        <h2 class="text-2xl font-bold mb-4">Settings</h2>
+      <div class="bg-slate-800 border border-slate-700 rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto" on:click|stopPropagation>
+        <!-- Header with Close Button -->
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-2xl font-bold">Settings</h2>
+          <button
+            on:click={() => showSettings = false}
+            class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-700 transition-colors"
+            aria-label="Close settings"
+          >
+            <span class="text-2xl">✕</span>
+          </button>
+        </div>
 
         <!-- Theme Selection -->
         <div class="mb-6">
